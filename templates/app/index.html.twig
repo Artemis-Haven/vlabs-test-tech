@@ -3,19 +3,23 @@
 {% block title %}{{ parent() }} - Test Technique{% endblock %}
 
 {% block body %}
+	<div class="row">
+		<div class="col-md-6">
+			{% for point in pointsOfInterest %}
+				{% include 'app/_pointOfInterest.html.twig' with {'point': point} only %}
+			{% else %}
+				Aucun point d'intérêt n'est enregistré.
+			{% endfor %}
+		</div>
+		<div class="col-md-6">
+			
+		</div>
+	</div>
 
-	{% for point in pointsOfInterest %}
-		{% include 'app/_pointOfInterest.html.twig' with {'point': point} only %}
-	{% else %}
-		Aucun point d'intérêt n'est enregistré.
-	{% endfor %}
-
-	{{ form(newPointForm, {'attr': {'id': 'new_point_form'}}) }}
-
+	{% include 'app/_newPointModal.html.twig' with {'form': newPointForm} only %}
 {% endblock %}
 
 {% block javascripts %}
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
 	<script type="text/javascript">
 		$('body').on('submit', '#new_point_form', function (e) {
 	        e.preventDefault();
@@ -35,9 +39,9 @@
 	        .fail(function (jqXHR, textStatus, errorThrown) {
 	            if (typeof jqXHR.responseJSON !== 'undefined') {
 	                if (jqXHR.responseJSON.hasOwnProperty('form')) {
-	                    $('#form_body').html(jqXHR.responseJSON.form);
+	                    console.log(jqXHR.responseJSON.form);
 	                }
-	                $('.form_error').html(jqXHR.responseJSON.message);
+	                console.log(jqXHR.responseJSON.message);
 	            } else {
 	                alert(errorThrown);
 	            }

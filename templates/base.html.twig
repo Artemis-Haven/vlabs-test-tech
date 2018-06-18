@@ -3,10 +3,25 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}V-Labs{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+    	<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">
+						<img alt="V-Labs" src="{{ asset('img/logo-white.svg') }}">
+					</a>
+				</div>
+				<button type="button" class="btn btn-primary navbar-btn navbar-right" data-toggle="modal" data-target="#newPointModal">Ajouter un point d'intérêt</button>
+			</div>
+		</nav>
+		<section class="container-fluid">
+	        {% block body %}{% endblock %}
+		</section>
+
+        <script src="{{ asset('build/js/app.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
