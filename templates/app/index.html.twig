@@ -1,20 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}{{ parent() }} - Test Technique{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+	{% for point in pointsOfInterest %}
+		{% include 'app/_pointOfInterest.html.twig' with {'point': point} only %}
+	{% else %}
+		Aucun point d'intérêt n'est enregistré.
+	{% endfor %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/AppController.php'|file_link(0) }}">src/Controller/AppController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/app/index.html.twig'|file_link(0) }}">templates/app/index.html.twig</a></code></li>
-    </ul>
-</div>
+	{{ form(newPointForm, {'attr': {'id': 'new_point_form'}}) }}
+
+{% endblock %}
+
+{% block javascripts %}
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		$('body').on('submit', '#new_point_form', function (e) {
+	        e.preventDefault();
+	        $.ajax({
+	            type: $(this).attr('method'),
+	            url:  $(this).attr('action'),
+	            data: $(this).serialize()
+	        })
+	        .done(function (data) {
+	        	var name = $('#point_name').val();
+	        	var address = $('#point_address').val();
+	        	var latitude = $('#point_latitude').val();
+	        	var longitude = $('#point_longitude').val();
+	            addPointToMap(name, address, latitude, longitude);
+	            $('#new_point_form input').val('');
+	        })
+	        .fail(function (jqXHR, textStatus, errorThrown) {
+	            if (typeof jqXHR.responseJSON !== 'undefined') {
+	                if (jqXHR.responseJSON.hasOwnProperty('form')) {
+	                    $('#form_body').html(jqXHR.responseJSON.form);
+	                }
+	                $('.form_error').html(jqXHR.responseJSON.message);
+	            } else {
+	                alert(errorThrown);
+	            }
+	        });
+	    });
+
+	    function addPointToMap(name, address, latitude, longitude) {
+	    	console.log('TODO: addPointToMap');
+	    }
+	</script>
 {% endblock %}
