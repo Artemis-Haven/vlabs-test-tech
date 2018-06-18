@@ -96,4 +96,17 @@ class Point
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+    public function __construct(string $name = null, string $address = null, string $lat = null, string $long = null)
+    {
+        $this->name = $name;
+        $this->address = $address;
+        $this->latitude = $lat;
+        $this->longitude = $long;
+    }
 }
