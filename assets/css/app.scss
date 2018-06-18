@@ -1,0 +1,13 @@
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
+
+/* Global CSS */
+
+body > .container-fluid {
+	padding-top: 50px;
+}
+
+/* NavBar */
+
