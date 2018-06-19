@@ -1,1 +1,11 @@
-{{ point }}
+<article class='pointOfInterest' data-lat="{{ point.latitude }}" data-long="{{ point.longitude }}">
+	<div class="row">
+		<div class="col-md-8">
+			<p class="poi-name">{{ point.name }}</p>
+			<p class="poi-address">{{ point.address }}</p>
+		</div>
+		<div class="col-md-4">
+			<a href="#" class="poi-find"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Localiser</a></a>
+		</div>
+	</div>
+</article>

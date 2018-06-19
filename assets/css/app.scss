@@ -1,13 +1,30 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
-
+$brand-primary: rgb(0, 156, 47);
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
 
 /* Global CSS */
 
+body {
+	background-color: #F2F2F2;
+}
+
 body > .container-fluid {
 	padding-top: 50px;
 }
 
-/* NavBar */
+/* Point of interest */
 
+.pointOfInterest {
+	background-color: #FFF;
+	box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+	margin-bottom: 10px;
+	padding: 30px;
+}
+
+/* Map */
+
+#map {
+	height: 400px;
+	width: 100%;
+}
