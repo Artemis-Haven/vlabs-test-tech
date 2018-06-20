@@ -49,7 +49,7 @@ class AppController extends Controller
 			$em->persist($point);
 			$em->flush();
 
-        	return new JsonResponse(['2']);
+        	return new JsonResponse(['html' => $this->renderView('app/_pointOfInterest.html.twig', ['point' => $point])]);
 		}
 
         return new JsonResponse(["Erreur à l'enregistrement du point d'intérêt"]);

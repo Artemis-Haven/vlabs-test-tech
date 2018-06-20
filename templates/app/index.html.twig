@@ -7,11 +7,13 @@
 		<div class="col-md-6">
 			<input type="text" id="searchBox"></input>
 
-			{% for point in pointsOfInterest %}
-				{% include 'app/_pointOfInterest.html.twig' with {'point': point} only %}
-			{% else %}
-				Aucun point d'intérêt n'est enregistré.
-			{% endfor %}
+			<div id="pointsList">
+				{% for point in pointsOfInterest %}
+					{% include 'app/_pointOfInterest.html.twig' with {'point': point} only %}
+				{% else %}
+					<span id="NoPoint">Aucun point d'intérêt n'est enregistré.</span>
+				{% endfor %}
+			</div>
 		</div>
 		<div class="col-md-6">
 			<section id="map"></section>

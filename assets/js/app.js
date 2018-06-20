@@ -88,6 +88,8 @@ $('body').on('submit', '#new_point_form', function (e) {
         addPointToMap(name, address, latitude, longitude);
         $('#new_point_form input').val('');
         $('#newPointModal').modal('hide');
+        $('#noPoint').remove();
+        $('#pointsList').append(data.html);
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
         if (typeof jqXHR.responseJSON !== 'undefined') {
