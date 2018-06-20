@@ -111,6 +111,20 @@ function addPointToMap(name, address, latitude, longitude) {
 			lng: parseFloat(longitude)
 		},
 		map: map
-	})
+	});
 }
 
+/**
+ * Centrer la carte sur les coordonnées passées en paramètre
+ */
+function goToPoint(latitude, longitude) {
+	map.panTo(new google.maps.LatLng(latitude, longitude));
+}
+
+/**
+ * Au clic sur un bouton "Localiser", centrer la carte sur le point.
+ */
+$('body').on('click', '.poi-find', function() {
+	var $point = $(this).closest('.pointOfInterest');
+	goToPoint(parseFloat($point.data('lat')), parseFloat($point.data('long')));
+});
