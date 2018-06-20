@@ -5,6 +5,8 @@
 {% block body %}
 	<div class="row">
 		<div class="col-md-6">
+			<input type="text" id="searchBox"></input>
+
 			{% for point in pointsOfInterest %}
 				{% include 'app/_pointOfInterest.html.twig' with {'point': point} only %}
 			{% else %}

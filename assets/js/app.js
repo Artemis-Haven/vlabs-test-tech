@@ -118,7 +118,7 @@ function addPointToMap(name, address, latitude, longitude) {
  * Centrer la carte sur les coordonnées passées en paramètre
  */
 function goToPoint(latitude, longitude) {
-	map.panTo(new google.maps.LatLng(latitude, longitude));
+	map.panTo(new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude)));
 }
 
 /**
@@ -126,5 +126,42 @@ function goToPoint(latitude, longitude) {
  */
 $('body').on('click', '.poi-find', function() {
 	var $point = $(this).closest('.pointOfInterest');
-	goToPoint(parseFloat($point.data('lat')), parseFloat($point.data('long')));
+	goToPoint($point.data('lat'), $point.data('long'));
 });
+
+
+/**
+ * Autocomplete lorsque l'on saisi du texte dans le champ "Rechercher un point d'intérêt"
+ * Recherche parmi tous les points d'intérêts existants
+ */
+$('body').on('keyup', '#searchBox', function (e) {
+	$( "#searchBox" ).autocomplete({
+		source: function(request,response) {
+			// Récupérer les noms et coordonnées de chaque point dans la liste
+			response($('.pointOfInterest').map(function(index, elt) {
+				return {
+					label: $(elt).find('.poi-name').text(),
+					lat: $(elt).data('lat'),
+					long: $(elt).data('long'),
+				}
+			}).filter(function (index, elt) {
+				return (elt.label.toLowerCase().indexOf(request.term.toLowerCase()) !== -1);
+			}));
+		},
+		select: function(event,ui){
+			// Lorsqu'un élément est sélectionné, centrer la carte sur lui
+			goToPoint(ui.item.lat, ui.item.long);
+		}
+	}).autocomplete( "instance" )._renderItem = function( ul, item ) {
+		// Afficher les éléments de la liste déroulante avec le terme recherché en gras
+		var term = $( "#searchBox" ).val().toLowerCase();
+		var markerIcon = "<span class='glyphicon glyphicon-map-marker' aria-hidden='true'>";
+		var labelBeforeTerm = item.label.substring(0, item.label.toLowerCase().indexOf(term));
+		var termInLabel = item.label.substring(item.label.toLowerCase().indexOf(term), item.label.toLowerCase().indexOf(term) + term.length);
+		var labelAfterTerm = item.label.substring(item.label.toLowerCase().indexOf(term) + term.length);
+      	return $('<li>')
+      		.append( markerIcon+" <div>" + labelBeforeTerm + "<strong>" + term + "</strong>" + labelAfterTerm + "</div>" )
+	        .appendTo( ul );
+    };
+});
+

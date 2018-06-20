@@ -52,7 +52,7 @@ class AppController extends Controller
         	return new JsonResponse(['2']);
 		}
 
-        return new JsonResponse(['1']);
+        return new JsonResponse(["Erreur à l'enregistrement du point d'intérêt"]);
     }
 
 

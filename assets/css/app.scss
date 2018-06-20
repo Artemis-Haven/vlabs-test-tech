@@ -39,3 +39,7 @@ body > .container-fluid {
 .ui-autocomplete.ui-front > .ui-menu-item {
 	list-style: none;
 }
+
+.ui-menu-item * {
+	display: inline;
+}
