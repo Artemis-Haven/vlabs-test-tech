@@ -3,20 +3,25 @@
 {% block title %}{{ parent() }} - Test Technique{% endblock %}
 
 {% block body %}
-	<div class="row">
-		<div class="col-md-6">
-			<input type="text" id="searchBox"></input>
-
-			<div id="pointsList">
-				{% for point in pointsOfInterest %}
-					{% include 'app/_pointOfInterest.html.twig' with {'point': point} only %}
-				{% else %}
-					<span id="NoPoint">Aucun point d'intérêt n'est enregistré.</span>
-				{% endfor %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-6 col-sm-12 col-md-push-6" id="mapContainer">
+				<section id="map"></section>
 			</div>
-		</div>
-		<div class="col-md-6">
-			<section id="map"></section>
+			<div class="col-md-6 col-sm-12 col-md-pull-6" id="pointsContainer">
+				<div id="searchBox">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<input type="text" placeholder="Rechercher un point d'intérêt"></input>
+				</div>
+				
+				<div id="pointsList">
+					{% for point in pointsOfInterest %}
+						{% include 'app/_pointOfInterest.html.twig' with {'point': point} only %}
+					{% else %}
+						<span id="NoPoint">Aucun point d'intérêt n'est enregistré.</span>
+					{% endfor %}
+				</div>
+			</div>
 		</div>
 	</div>
 

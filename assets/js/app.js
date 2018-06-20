@@ -22,7 +22,8 @@ function initMap() {
 	// Créer la carte
 	map = new google.maps.Map(document.getElementById('map'), {
 		zoom: 11,
-		center: {lat: 48.859, lng: 2.35}
+		center: {lat: 48.859, lng: 2.35},
+	    disableDefaultUI: true
 	});
 	// Ajouter un marqueur par point d'intérêt sur la carte
 	coords.each(function(index, elt) {
@@ -136,8 +137,8 @@ $('body').on('click', '.poi-find', function() {
  * Autocomplete lorsque l'on saisi du texte dans le champ "Rechercher un point d'intérêt"
  * Recherche parmi tous les points d'intérêts existants
  */
-$('body').on('keyup', '#searchBox', function (e) {
-	$( "#searchBox" ).autocomplete({
+$('body').on('keyup', '#searchBox input', function (e) {
+	$( "#searchBox input" ).autocomplete({
 		source: function(request,response) {
 			// Récupérer les noms et coordonnées de chaque point dans la liste
 			response($('.pointOfInterest').map(function(index, elt) {
@@ -156,7 +157,7 @@ $('body').on('keyup', '#searchBox', function (e) {
 		}
 	}).autocomplete( "instance" )._renderItem = function( ul, item ) {
 		// Afficher les éléments de la liste déroulante avec le terme recherché en gras
-		var term = $( "#searchBox" ).val().toLowerCase();
+		var term = $( "#searchBox input" ).val().toLowerCase();
 		var markerIcon = "<span class='glyphicon glyphicon-map-marker' aria-hidden='true'>";
 		var labelBeforeTerm = item.label.substring(0, item.label.toLowerCase().indexOf(term));
 		var termInLabel = item.label.substring(item.label.toLowerCase().indexOf(term), item.label.toLowerCase().indexOf(term) + term.length);
