@@ -31,6 +31,7 @@ class PointType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Point::class,
+            'csrf_protection'   => false,
         ]);
     }
 }
