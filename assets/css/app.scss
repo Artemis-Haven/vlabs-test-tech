@@ -1,7 +1,7 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 $brand-primary: rgb(0, 156, 47);
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
-
+@import "~jquery-ui/themes/base/autocomplete.css";
 
 /* Global CSS */
 
@@ -27,4 +27,15 @@ body > .container-fluid {
 #map {
 	height: 400px;
 	width: 100%;
+}
+
+/* Autocomplete */
+.ui-autocomplete.ui-front {
+	z-index: 9999;
+	background-color: #fff;
+	padding: 5px;
+}
+
+.ui-autocomplete.ui-front > .ui-menu-item {
+	list-style: none;
 }
