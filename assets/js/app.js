@@ -65,7 +65,11 @@ $('body').on('keyup', '#point_address', function (e) {
 				$( "#point_longitude" ).val(ui.item.geocode.geometry.location.lng());
 			},
 			appendTo: "#newPointModal"
-		});
+		}).autocomplete( "instance" )._renderItem = function( ul, item ) {
+			// Afficher les éléments de la liste déroulante avec le terme recherché en gras
+			var term = $( "#point_address" ).val().toLowerCase();
+			return formatAutocompleteItem(term, item.label).appendTo(ul);
+	    };
 	}
 });
 
@@ -160,13 +164,18 @@ $('body').on('keyup', '#searchBox input', function (e) {
 	}).autocomplete( "instance" )._renderItem = function( ul, item ) {
 		// Afficher les éléments de la liste déroulante avec le terme recherché en gras
 		var term = $( "#searchBox input" ).val().toLowerCase();
-		var markerIcon = "<span class='glyphicon glyphicon-map-marker' aria-hidden='true'>";
-		var labelBeforeTerm = item.label.substring(0, item.label.toLowerCase().indexOf(term));
-		var termInLabel = item.label.substring(item.label.toLowerCase().indexOf(term), item.label.toLowerCase().indexOf(term) + term.length);
-		var labelAfterTerm = item.label.substring(item.label.toLowerCase().indexOf(term) + term.length);
-      	return $('<li>')
-      		.append( markerIcon+" <div>" + labelBeforeTerm + "<strong>" + term + "</strong>" + labelAfterTerm + "</div>" )
-	        .appendTo( ul );
+		return formatAutocompleteItem(term, item.label).appendTo(ul);
     };
 });
 
+/**
+ * Formate le label passé en paramètre en ajoutant une icone de marqueur en début de texte
+ * et en mettant le terme passé en paramètre en gras.
+ */
+function formatAutocompleteItem(term, label) {
+	var markerIcon = "<span class='glyphicon glyphicon-map-marker' aria-hidden='true'></span>";
+	var labelBeforeTerm = label.substring(0, label.toLowerCase().indexOf(term));
+	var termInLabel = label.substring(label.toLowerCase().indexOf(term), label.toLowerCase().indexOf(term) + term.length);
+	var labelAfterTerm = label.substring(label.toLowerCase().indexOf(term) + term.length);
+  	return $('<li>').append( markerIcon+" <div>" + labelBeforeTerm + "<strong>" + termInLabel + "</strong>" + labelAfterTerm + "</div>" );
+}

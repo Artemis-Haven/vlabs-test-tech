@@ -30,6 +30,7 @@ body > section > .container-fluid > .row > * {
 #pointsContainer {
 	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
 	padding: 40px 50px 0 100px;
+	overflow-y: scroll;
 }
 
 @media (max-width: 991px) {
@@ -132,14 +133,17 @@ nav.navbar button:hover .glyphicon {
     margin-bottom: 20px;
 }
 
-#searchBox .glyphicon {
+#searchBox > .glyphicon {
 	color: #009C2F;
 	padding: 0 10px;
 }
 
 #searchBox input {
+	display: block;
 	border: none;
-	width: 80%;
+    width: 100%;
+    padding: 0 50px;
+    margin-top: -20px;
 }
 
 /* Modal window */
@@ -189,11 +193,12 @@ nav.navbar button:hover .glyphicon {
 	background-color: #fff;
 	padding: 0;
 	border: 1px solid #E5E5E5;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
 }
 
 .ui-autocomplete.ui-front > .ui-menu-item {
 	list-style: none;
-	padding: 5px;
+	padding: 10px 5px;
 	color: #000;
 }
 
@@ -206,5 +211,11 @@ nav.navbar button:hover .glyphicon {
 	display: inline;
 }
 
+.ui-menu-item .glyphicon {
+	margin: 0 10px;
+	opacity: 0.5;
+}
 
-
+.ui-helper-hidden-accessible {
+	display: none;
+}
