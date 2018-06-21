@@ -4,9 +4,11 @@ require("jquery-ui/ui/widgets/autocomplete");
 require('bootstrap-sass');
 
 var map;
+var markers = [];
 var geocoder;
 var autocompleteChoices = [];
 var delayer = false;
+var infoWindow;
 
 /**
  * Initialisation de la Map
@@ -15,22 +17,26 @@ function initMap() {
 	// Récupérer les coordonnées des points d'intérêt
 	var coords = $('article.pointOfInterest').map(function (index, elt) {
 		return {
+			name: $(elt).find('.poi-name').text(),
+			address: $(elt).find('.poi-address').text(),
 			lat: parseFloat($(elt).data('lat')), 
 			lng: parseFloat($(elt).data('long'))
 		};
 	})
 	// Créer la carte
 	map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 11,
+		zoom: 12,
 		center: {lat: 48.859, lng: 2.35},
 	    disableDefaultUI: true
 	});
+	// Créer la popup de détail
+	infoWindow = new google.maps.InfoWindow({
+		content: "Point d'intérêt"
+    });
+
 	// Ajouter un marqueur par point d'intérêt sur la carte
 	coords.each(function(index, elt) {
-		var marker = new google.maps.Marker({
-			position: elt,
-			map: map
-		});
+		var marker = addPointToMap(elt.name, elt.address, elt.lat, elt.lng);
 	})
 	// Créer le geocoder
 	geocoder = new google.maps.Geocoder();
@@ -86,12 +92,13 @@ $('body').on('submit', '#new_point_form', function (e) {
         data: $(this).serialize()
     })
     .done(function (data) {
-    	// Lorsque le point est bien créé en BdD, l'ajouter sur la carte
+    	// Lorsque le point est bien créé en BdD, l'ajouter sur la carte et l'afficher
     	var name = $('#point_name').val();
     	var address = $('#point_address').val();
     	var latitude = $('#point_latitude').val();
     	var longitude = $('#point_longitude').val();
-        addPointToMap(name, address, latitude, longitude);
+        var marker = addPointToMap(name, address, latitude, longitude);
+        goToPoint(name, address, latitude, longitude);
         $('#new_point_form input').val('');
         $('#newPointModal').modal('hide');
         $('#noPoint').remove();
@@ -113,20 +120,35 @@ $('body').on('submit', '#new_point_form', function (e) {
  * Ajout d'un marqueur sur la carte
  */
 function addPointToMap(name, address, latitude, longitude) {
-	new google.maps.Marker({
+	var marker = new google.maps.Marker({
+		icon: 'img/map_marker.png',
 		position: {
+			name: name,
+			address: address,
 			lat: parseFloat(latitude),
 			lng: parseFloat(longitude)
 		},
 		map: map
 	});
+	markers.push(marker);
+	// Au clic, centrer sur le point et afficher la popup
+	marker.addListener('click', function() {
+		goToPoint(name, address, latitude, longitude);
+	});
+
+	return marker;
 }
 
 /**
- * Centrer la carte sur les coordonnées passées en paramètre
+ * Centrer la carte sur les coordonnées passées en paramètre et afficher la popup
  */
-function goToPoint(latitude, longitude) {
+function goToPoint(name, address, latitude, longitude) {
+	infoWindow.setContent(
+		'<div class="popup-name">'+name+'</div>'+
+		'<div class="popup-address">'+address+'</div>'
+	);
 	map.panTo(new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude)));
+	infoWindow.open(map, findClosestMarker(parseFloat(latitude), parseFloat(longitude)));
 }
 
 /**
@@ -134,7 +156,12 @@ function goToPoint(latitude, longitude) {
  */
 $('body').on('click', '.poi-find', function() {
 	var $point = $(this).closest('.pointOfInterest');
-	goToPoint($point.data('lat'), $point.data('long'));
+	goToPoint(
+		$point.find('.poi-name').text(), 
+		$point.find('.poi-address').text(), 
+		$point.data('lat'), 
+		$point.data('long')
+	);
 });
 
 
@@ -149,6 +176,7 @@ $('body').on('keyup', '#searchBox input', function (e) {
 			response($('.pointOfInterest').map(function(index, elt) {
 				return {
 					label: $(elt).find('.poi-name').text(),
+					address: $(elt).find('.poi-address').text(),
 					lat: $(elt).data('lat'),
 					long: $(elt).data('long'),
 				}
@@ -158,7 +186,7 @@ $('body').on('keyup', '#searchBox input', function (e) {
 		},
 		select: function(event,ui){
 			// Lorsqu'un élément est sélectionné, centrer la carte sur lui
-			goToPoint(ui.item.lat, ui.item.long);
+			goToPoint(ui.item.label, ui.item.address, ui.item.lat, ui.item.long);
 		},
 		appendTo: "#searchBox"
 	}).autocomplete( "instance" )._renderItem = function( ul, item ) {
@@ -178,4 +206,33 @@ function formatAutocompleteItem(term, label) {
 	var termInLabel = label.substring(label.toLowerCase().indexOf(term), label.toLowerCase().indexOf(term) + term.length);
 	var labelAfterTerm = label.substring(label.toLowerCase().indexOf(term) + term.length);
   	return $('<li>').append( markerIcon+" <div>" + labelBeforeTerm + "<strong>" + termInLabel + "</strong>" + labelAfterTerm + "</div>" );
+}
+
+
+/**
+ * Trouver le marqueur le plus proche des coordonnées passées en paramètre
+ * 
+ * Source : https://stackoverflow.com/questions/4057665/google-maps-api-v3-find-nearest-markers
+ */
+function rad(x) {return x*Math.PI/180;}
+function findClosestMarker( lat, lng ) {
+    var R = 6371; // radius of earth in km
+    var distances = [];
+    var closest = -1;
+    for( i=0;i<markers.length; i++ ) {
+        var mlat = markers[i].position.lat();
+        var mlng = markers[i].position.lng();
+        var dLat  = rad(mlat - lat);
+        var dLong = rad(mlng - lng);
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        distances[i] = d;
+        if ( closest == -1 || d < distances[closest] ) {
+            closest = i;
+        }
+    }
+
+    return markers[closest];
 }
