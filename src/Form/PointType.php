@@ -22,7 +22,7 @@ class PointType extends AbstractType
             ->add('latitude', Type\HiddenType::class)
             ->add('longitude', Type\HiddenType::class)
             ->add('submit', Type\SubmitType::class, [
-                'label' => "Valider"
+                'label' => "Ajouter"
             ])
         ;
     }

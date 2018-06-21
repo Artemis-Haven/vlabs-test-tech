@@ -2,12 +2,14 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 $brand-primary: rgb(0, 156, 47);
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
 @import "~jquery-ui/themes/base/autocomplete.css";
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
 
 /* Global CSS */
 
 html, body {
 	background-color: #F2F2F2;
 	height: 100%;
+	font-family: Ubuntu, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 body > section {
@@ -120,21 +122,6 @@ nav.navbar button:hover .glyphicon {
 	width: 100%;
 }
 
-/* Autocomplete */
-.ui-autocomplete.ui-front {
-	z-index: 9999;
-	background-color: #fff;
-	padding: 5px;
-}
-
-.ui-autocomplete.ui-front > .ui-menu-item {
-	list-style: none;
-}
-
-.ui-menu-item * {
-	display: inline;
-}
-
 /* Search box */
 
 #searchBox {
@@ -154,3 +141,70 @@ nav.navbar button:hover .glyphicon {
 	border: none;
 	width: 80%;
 }
+
+/* Modal window */
+
+.modal-content {
+	border-radius: 5px;
+	padding: 15px 30px;
+}
+
+.modal-header {
+	border-bottom: none;
+}
+
+.modal-title {
+	margin-bottom: 20px;
+}
+
+.modal-footer {
+	border-top: none;
+}
+
+.modal label, .modal button.close {
+	color: #009C2F;
+}
+
+.modal input {
+	border: 1px solid #E5E5E5;
+	border-radius: 5px;
+}
+
+.modal button[type='submit'] {
+    background-color: transparent;
+    border: 2px solid #009C2F;
+    margin: 0 30px;
+    color: #009C2F;
+}
+.modal button[type='submit']:hover {
+    background-color: transparent;
+    border-color: #008B30;
+    color: #008B30;
+}
+
+
+/* Autocomplete */
+.ui-autocomplete.ui-front {
+	z-index: 9999;
+	background-color: #fff;
+	padding: 0;
+	border: 1px solid #E5E5E5;
+}
+
+.ui-autocomplete.ui-front > .ui-menu-item {
+	list-style: none;
+	padding: 5px;
+	color: #000;
+}
+
+.ui-autocomplete.ui-front > .ui-menu-item:hover {
+	background-color: #009C2F;
+	color: #fff;
+}
+
+.ui-menu-item * {
+	display: inline;
+}
+
+
+

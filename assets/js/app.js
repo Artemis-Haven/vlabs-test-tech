@@ -63,7 +63,8 @@ $('body').on('keyup', '#point_address', function (e) {
 				$( "#point_address" ).val(ui.item.geocode.formatted_address);
 				$( "#point_latitude" ).val(ui.item.geocode.geometry.location.lat());
 				$( "#point_longitude" ).val(ui.item.geocode.geometry.location.lng());
-			}
+			},
+			appendTo: "#newPointModal"
 		});
 	}
 });
@@ -154,7 +155,8 @@ $('body').on('keyup', '#searchBox input', function (e) {
 		select: function(event,ui){
 			// Lorsqu'un élément est sélectionné, centrer la carte sur lui
 			goToPoint(ui.item.lat, ui.item.long);
-		}
+		},
+		appendTo: "#searchBox"
 	}).autocomplete( "instance" )._renderItem = function( ul, item ) {
 		// Afficher les éléments de la liste déroulante avec le terme recherché en gras
 		var term = $( "#searchBox input" ).val().toLowerCase();
