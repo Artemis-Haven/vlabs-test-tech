@@ -11,7 +11,7 @@ html, body {
 }
 
 body > section {
-	padding-top: 50px;
+	padding-top: 100px;
 	height: 100%;
 }
  
@@ -43,6 +43,47 @@ body > section > .container-fluid > .row > * {
 @media (max-width: 767px) {
     #pointsContainer {
         padding: 30px 30px 0 30px;
+    }
+}
+
+/* Navbar */
+
+nav.navbar {
+	height: 100px;
+	background-color: #292929;
+}
+
+@media (min-width: 768px) {
+    nav.navbar > .container-fluid {
+        margin-top: 25px;
+    }
+}
+
+nav.navbar button {
+    background-color: transparent;
+    border: 2px solid #009C2F;
+    margin: 0 30px;
+}
+nav.navbar button:hover {
+    background-color: transparent;
+    border-color: #008B30;
+}
+nav.navbar button .glyphicon {
+    color: #009C2F;
+
+}
+nav.navbar button:hover .glyphicon {
+    color: #008B30;
+}
+@media (max-width: 767px) {
+    nav.navbar .container-fluid {
+        text-align: center;
+    }
+    nav.navbar a.navbar-brand {
+    	width: 100%;
+    }
+    nav.navbar a.navbar-brand img {
+    	display: inline-block;
     }
 }
 
