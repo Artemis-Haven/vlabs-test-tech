@@ -62,6 +62,10 @@ nav.navbar {
     }
 }
 
+.navbar-brand {
+	padding-top: 0;
+}
+
 nav.navbar button {
     background-color: transparent;
     border: 2px solid #009C2F;
@@ -99,6 +103,11 @@ nav.navbar button:hover .glyphicon {
 	border-radius: 5px;
 	margin-bottom: 15px;
 	padding: 30px;
+}
+@media (max-width: 767px) {
+    .pointOfInterest {
+        text-align: center;
+    }
 }
 
 .poi-name {
