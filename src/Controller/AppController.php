@@ -22,7 +22,7 @@ class AppController extends Controller
     public function index()
     {
     	$pointsOfInterest = $this->getDoctrine()->getManager()->getRepository('App:Point')->findAll();
-    	$newPointForm = $this->createNewPointForm(new Point(null, null, '42', '4'));
+    	$newPointForm = $this->createNewPointForm(new Point());
 
         return [
         	'pointsOfInterest' => $pointsOfInterest,
