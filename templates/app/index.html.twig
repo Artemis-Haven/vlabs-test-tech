@@ -18,7 +18,7 @@
 					{% for point in pointsOfInterest %}
 						{% include 'app/_pointOfInterest.html.twig' with {'point': point} only %}
 					{% else %}
-						<span id="NoPoint">Aucun point d'intérêt n'est enregistré.</span>
+						<span id="noPoint">Aucun point d'intérêt n'est enregistré.</span>
 					{% endfor %}
 				</div>
 			</div>
